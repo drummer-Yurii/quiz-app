@@ -5,35 +5,22 @@ const questions = ref([
   {
     question: 'What is Vue JS?',
     answer: 0,
-    options: [
-      'A front end framework',
-      'A library',
-      'An ice cream maker',
-    ],
+    options: ['A front end framework', 'A library', 'An ice cream maker'],
     selected: null,
   },
   {
     question: 'What is Vuex?',
     answer: 2,
-    options: [
-      'Vue with an x',
-      'A cheese selection',
-      'State management library',
-    ],
+    options: ['Vue with an x', 'A cheese selection', 'State management library'],
     selected: null,
   },
   {
     question: 'What is Vue Router used for?',
     answer: 1,
-    options: [
-      'Walking in space',
-      'A routing library for Vue JS',
-      'Burger sauce',
-      'Quizzes',
-    ],
+    options: ['Walking in space', 'A routing library for Vue JS', 'Burger sauce', 'Quizzes'],
     selected: null,
   },
-])
+]);
 
 const quizCompleted = ref(false);
 
@@ -41,24 +28,24 @@ const currentQuestion = ref(0);
 
 const score = computed(() => {
   let value = 0;
-  questions.value.map(q => {
+  questions.value.map((q) => {
     if (q.selected == q.answer) {
       value++;
     }
-  })
+  });
   return value;
-})
+});
 
 const getCurrentQuestion = computed(() => {
   let question = questions.value[currentQuestion.value];
   question.index = currentQuestion.value;
   return question;
-})
+});
 
-const SetAnswer = evt => {
+const SetAnswer = (evt) => {
   questions.value[currentQuestion.value].selected = evt.target.value;
   evt.target.value = null;
-}
+};
 
 const NextQuestion = () => {
   if (currentQuestion.value < questions.value.length - 1) {
@@ -66,7 +53,7 @@ const NextQuestion = () => {
   } else {
     quizCompleted.value = true;
   }
-}
+};
 </script>
 
 <template>
@@ -76,6 +63,29 @@ const NextQuestion = () => {
       <div class="quiz-info">
         <span class="question">{{ getCurrentQuestion.question }}</span>
         <span class="score">Score {{ score }}/{{ questions.length }}</span>
+      </div>
+      <div class="options">
+        <label
+          v-for="(option, index) in getCurrentQuestion.options"
+          :key="index"
+          :class="`option ${
+            getCurrentQuestion.selected == index
+              ? index == getCurrentQuestion.answer
+                ? 'correct'
+                : 'wrong'
+              : ''
+          } ${
+            getCurrentQuestion.selected != null && index != getCurrentQuestion.selected
+              ? 'disabled'
+              : ''
+          }`"
+        >
+          <input
+            type="radio"
+            :name="getCurrentQuestion.index"
+            :value="index"
+          />
+        </label>
       </div>
     </section>
   </main>
@@ -90,7 +100,7 @@ const NextQuestion = () => {
 }
 
 body {
-  background-color: #271C36;
-  color: #FFF;
+  background-color: #271c36;
+  color: #fff;
 }
 </style>
