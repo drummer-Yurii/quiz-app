@@ -84,7 +84,11 @@ const NextQuestion = () => {
             type="radio"
             :name="getCurrentQuestion.index"
             :value="index"
+            v-model="getCurrentQuestion.selected"
+            :disabled="getCurrentQuestion.selected"
+            @change="SetAnswer"
           />
+          <span>{{ option }}</span>
         </label>
       </div>
     </section>
